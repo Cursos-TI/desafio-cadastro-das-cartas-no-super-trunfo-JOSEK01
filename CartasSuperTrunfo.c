@@ -57,6 +57,7 @@ int main() {
     pibPerCapita1 = (pib1 * 1000000000) / Populacao1;
     pibPerCapita2 = (pib2 * 1000000000) / Populacao2;
 
+    // Super Poder combinando todos atributos
     superPoder1 = (float)Populacao1 + area1 + (pib1 * 1000000000) + pontos1 + pibPerCapita1 + (1.0f / densidade1);
     superPoder2 = (float)Populacao2 + area2 + (pib2 * 1000000000) + pontos2 + pibPerCapita2 + (1.0f / densidade2);
 
@@ -97,69 +98,45 @@ int main() {
 
     switch (atributo) {
         case 1:
-            printf("Atributo: População\n");
-            printf("Cidade 1: %lu | Cidade 2: %lu\n", Populacao1, Populacao2);
-            if (Populacao1 > Populacao2)
-                printf("Resultado: Cidade 1 venceu!\n");
-            else if (Populacao2 > Populacao1)
-                printf("Resultado: Cidade 2 venceu!\n");
-            else
-                printf("Resultado: Empate!\n");
+            printf("População -> C1: %lu | C2: %lu\n", Populacao1, Populacao2);
+            if (Populacao1 > Populacao2) printf("Cidade 1 venceu!\n");
+            else if (Populacao2 > Populacao1) printf("Cidade 2 venceu!\n");
+            else printf("Empate!\n");
             break;
 
         case 2:
-            printf("Atributo: Área\n");
-            printf("Cidade 1: %.2f | Cidade 2: %.2f\n", area1, area2);
-            if (area1 > area2)
-                printf("Resultado: Cidade 1 venceu!\n");
-            else if (area2 > area1)
-                printf("Resultado: Cidade 2 venceu!\n");
-            else
-                printf("Resultado: Empate!\n");
+            printf("Área -> C1: %.2f | C2: %.2f\n", area1, area2);
+            if (area1 > area2) printf("Cidade 1 venceu!\n");
+            else if (area2 > area1) printf("Cidade 2 venceu!\n");
+            else printf("Empate!\n");
             break;
 
         case 3:
-            printf("Atributo: PIB\n");
-            printf("Cidade 1: %.2f | Cidade 2: %.2f\n", pib1, pib2);
-            if (pib1 > pib2)
-                printf("Resultado: Cidade 1 venceu!\n");
-            else if (pib2 > pib1)
-                printf("Resultado: Cidade 2 venceu!\n");
-            else
-                printf("Resultado: Empate!\n");
+            printf("PIB -> C1: %.2f | C2: %.2f\n", pib1, pib2);
+            if (pib1 > pib2) printf("Cidade 1 venceu!\n");
+            else if (pib2 > pib1) printf("Cidade 2 venceu!\n");
+            else printf("Empate!\n");
             break;
 
         case 4:
-            printf("Atributo: Densidade Populacional (menor vence)\n");
-            printf("Cidade 1: %.2f | Cidade 2: %.2f\n", densidade1, densidade2);
-            if (densidade1 < densidade2)
-                printf("Resultado: Cidade 1 venceu!\n");
-            else if (densidade2 < densidade1)
-                printf("Resultado: Cidade 2 venceu!\n");
-            else
-                printf("Resultado: Empate!\n");
+            printf("Densidade (menor vence) -> C1: %.2f | C2: %.2f\n", densidade1, densidade2);
+            if (densidade1 < densidade2) printf("Cidade 1 venceu!\n");
+            else if (densidade2 < densidade1) printf("Cidade 2 venceu!\n");
+            else printf("Empate!\n");
             break;
 
         case 5:
-            printf("Atributo: PIB per Capita\n");
-            printf("Cidade 1: %.2f | Cidade 2: %.2f\n", pibPerCapita1, pibPerCapita2);
-            if (pibPerCapita1 > pibPerCapita2)
-                printf("Resultado: Cidade 1 venceu!\n");
-            else if (pibPerCapita2 > pibPerCapita1)
-                printf("Resultado: Cidade 2 venceu!\n");
-            else
-                printf("Resultado: Empate!\n");
+            printf("PIB per Capita -> C1: %.2f | C2: %.2f\n", pibPerCapita1, pibPerCapita2);
+            if (pibPerCapita1 > pibPerCapita2) printf("Cidade 1 venceu!\n");
+            else if (pibPerCapita2 > pibPerCapita1) printf("Cidade 2 venceu!\n");
+            else printf("Empate!\n");
             break;
 
         case 6:
-            printf("Atributo: Super Poder\n");
-            printf("Cidade 1: %.2f | Cidade 2: %.2f\n", superPoder1, superPoder2);
-            if (superPoder1 > superPoder2)
-                printf("Resultado: Cidade 1 venceu!\n");
-            else if (superPoder2 > superPoder1)
-                printf("Resultado: Cidade 2 venceu!\n");
-            else
-                printf("Resultado: Empate!\n");
+            printf("Super Poder -> C1: %.2f | C2: %.2f\n", superPoder1, superPoder2);
+            if (superPoder1 > superPoder2) printf("Cidade 1 venceu!\n");
+            else if (superPoder2 > superPoder1) printf("Cidade 2 venceu!\n");
+            else printf("Empate!\n");
             break;
 
         default:
