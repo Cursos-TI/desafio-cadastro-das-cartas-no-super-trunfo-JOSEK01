@@ -1,22 +1,86 @@
 #include <stdio.h>
 
-// Desafio Super Trunfo - Países
-// Tema 1 - Cadastro das Cartas
-// Este código inicial serve como base para o desenvolvimento do sistema de cadastro de cartas de cidades.
-// Siga os comentários para implementar cada parte do desafio.
-//Teste larissa
+// ==========================
+// Funções Recursivas
+// ==========================
 
+// Torre: linha reta horizontal (Direita)
+void moverTorre(int casas) {
+    if (casas == 0) return; // condição de parada
+    printf("Direita\n");
+    moverTorre(casas - 1);
+}
+
+// Rainha: linha reta horizontal (Esquerda)
+void moverRainha(int casas) {
+    if (casas == 0) return; // condição de parada
+    printf("Esquerda\n");
+    moverRainha(casas - 1);
+}
+
+// Bispo: diagonal (Cima, Direita) com loops aninhados
+void moverBispo(int casasVertical, int casasHorizontal) {
+    if (casasVertical == 0) return; // condição de parada
+
+    // Loop interno: horizontal
+    for (int h = 0; h < casasHorizontal; h++) {
+        printf("Cima, Direita\n");
+    }
+
+    // Chamada recursiva para o próximo passo vertical
+    moverBispo(casasVertical - 1, casasHorizontal);
+}
+
+// ==========================
+// Função Principal
+// ==========================
 int main() {
-    // Sugestão: Defina variáveis separadas para cada atributo da cidade.
-    // Exemplos de atributos: código da cidade, nome, população, área, PIB, número de pontos turísticos.
-    
-    // Cadastro das Cartas:
-    // Sugestão: Utilize a função scanf para capturar as entradas do usuário para cada atributo.
-    // Solicite ao usuário que insira as informações de cada cidade, como o código, nome, população, área, etc.
-    
-    // Exibição dos Dados das Cartas:
-    // Sugestão: Utilize a função printf para exibir as informações das cartas cadastradas de forma clara e organizada.
-    // Exiba os valores inseridos para cada atributo da cidade, um por linha.
+    // Definindo número de casas para recursão
+    int casasTorre = 5;
+    int casasBispo = 5;
+    int casasRainha = 8;
+
+    // Definindo movimento do Cavalo (duas casas para cima, uma para direita)
+    int casasCavaloVertical = 2;
+    int casasCavaloHorizontal = 1;
+
+    // ==========================
+    // Movimentação da Torre
+    // ==========================
+    printf("Movimento da Torre:\n");
+    moverTorre(casasTorre);
+
+    // ==========================
+    // Movimentação do Bispo
+    // ==========================
+    printf("\nMovimento do Bispo:\n");
+    moverBispo(casasBispo, 1); // 1 casa horizontal por passo vertical
+
+    // ==========================
+    // Movimentação da Rainha
+    // ==========================
+    printf("\nMovimento da Rainha:\n");
+    moverRainha(casasRainha);
+
+    // ==========================
+    // Movimentação do Cavalo (loops complexos)
+    // ==========================
+    printf("\nMovimento do Cavalo:\n");
+    int v = 0; // controle vertical
+    while (v < casasCavaloVertical) {
+        printf("Cima\n");
+        v++;
+
+        int h = 0; // controle horizontal dentro do loop vertical
+        while (v == casasCavaloVertical) { // só na última iteração vertical
+            if (h < casasCavaloHorizontal) {
+                printf("Direita\n");
+                h++;
+                continue; // garante que o loop continue caso haja mais horizontais
+            }
+            break; // sai do loop interno quando completar o movimento horizontal
+        }
+    }
 
     return 0;
 }
