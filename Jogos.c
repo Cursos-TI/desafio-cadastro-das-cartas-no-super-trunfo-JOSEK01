@@ -1,90 +1,120 @@
 #include <stdio.h>
 
 #define TAM 10        // tamanho do tabuleiro
-#define TAM_NAVIO 3   // tamanho fixo dos navios
-#define NAVIO 3       // valor que representa navio no tabuleiro
+#define NAVIO 3       // valor que representa navio
+#define HABILIDADE 5  // valor que representa habilidade
+#define HABIL_TAM 5   // tamanho das matrizes de habilidade (5x5)
+
+// ---------------- Criar matrizes de habilidades ---------------- //
+void criarCone(int matriz[HABIL_TAM][HABIL_TAM]) {
+    int i, j;
+    for (i = 0; i < HABIL_TAM; i++) {
+        for (j = 0; j < HABIL_TAM; j++) {
+            // Cone: cresce para os lados conforme desce
+            if (j >= (HABIL_TAM/2 - i) && j <= (HABIL_TAM/2 + i))
+                matriz[i][j] = 1;
+            else
+                matriz[i][j] = 0;
+        }
+    }
+}
+
+void criarCruz(int matriz[HABIL_TAM][HABIL_TAM]) {
+    int i, j;
+    for (i = 0; i < HABIL_TAM; i++) {
+        for (j = 0; j < HABIL_TAM; j++) {
+            // Cruz: linha central + coluna central
+            if (i == HABIL_TAM/2 || j == HABIL_TAM/2)
+                matriz[i][j] = 1;
+            else
+                matriz[i][j] = 0;
+        }
+    }
+}
+
+void criarOctaedro(int matriz[HABIL_TAM][HABIL_TAM]) {
+    int i, j, centro = HABIL_TAM/2;
+    for (i = 0; i < HABIL_TAM; i++) {
+        for (j = 0; j < HABIL_TAM; j++) {
+            // Octaedro = losango (distância de Manhattan até o centro <= raio)
+            if (abs(i-centro) + abs(j-centro) <= centro)
+                matriz[i][j] = 1;
+            else
+                matriz[i][j] = 0;
+        }
+    }
+}
+
+// ---------------- Aplicar habilidades no tabuleiro ---------------- //
+void aplicarHabilidade(int tab[TAM][TAM], int matriz[HABIL_TAM][HABIL_TAM], int origemLinha, int origemColuna) {
+    int i, j;
+    int desloc = HABIL_TAM/2; // para centralizar no ponto de origem
+    
+    for (i = 0; i < HABIL_TAM; i++) {
+        for (j = 0; j < HABIL_TAM; j++) {
+            if (matriz[i][j] == 1) {
+                int linha = origemLinha + (i - desloc);
+                int coluna = origemColuna + (j - desloc);
+                
+                // verificar limites
+                if (linha >= 0 && linha < TAM && coluna >= 0 && coluna < TAM) {
+                    if (tab[linha][coluna] == 0) // não sobrescreve navio
+                        tab[linha][coluna] = HABILIDADE;
+                }
+            }
+        }
+    }
+}
+
+// ---------------- Mostrar tabuleiro ---------------- //
+void mostrarTabuleiro(int tab[TAM][TAM]) {
+    int i, j;
+    printf("\n===== TABULEIRO =====\n\n");
+    for (i = 0; i < TAM; i++) {
+        for (j = 0; j < TAM; j++) {
+            if (tab[i][j] == 0) printf(". ");       // água
+            else if (tab[i][j] == NAVIO) printf("N "); // navio
+            else if (tab[i][j] == HABILIDADE) printf("* "); // habilidade
+        }
+        printf("\n");
+    }
+}
 
 int main() {
-    int tabuleiro[TAM][TAM]; // tabuleiro 10x10
-    
+    int tabuleiro[TAM][TAM];
     int i, j;
-    int valido;
 
-    // -------- Inicializar o tabuleiro com água (0) --------
+    // Inicializa tabuleiro vazio
     for (i = 0; i < TAM; i++) {
         for (j = 0; j < TAM; j++) {
             tabuleiro[i][j] = 0;
         }
     }
 
-    // ===============================================
-    // Navio 1 - Horizontal (linha 2, colunas 1 a 3)
-    // ===============================================
-    valido = 1;
-    if (1 + TAM_NAVIO <= TAM) {
-        for (j = 0; j < TAM_NAVIO; j++) {
-            if (tabuleiro[2][1 + j] != 0) valido = 0;
-        }
-        if (valido) {
-            for (j = 0; j < TAM_NAVIO; j++) {
-                tabuleiro[2][1 + j] = NAVIO;
-            }
-        }
-    }
+    // Exemplo de navios fixos
+    tabuleiro[2][2] = NAVIO;
+    tabuleiro[2][3] = NAVIO;
+    tabuleiro[2][4] = NAVIO;
+    tabuleiro[5][7] = NAVIO;
+    tabuleiro[6][7] = NAVIO;
+    tabuleiro[7][7] = NAVIO;
 
-    // ===============================================
-    // Navio 2 - Vertical (coluna 6, linhas 4 a 6)
-    // ===============================================
-    valido = 1;
-    if (4 + TAM_NAVIO <= TAM) {
-        for (i = 0; i < TAM_NAVIO; i++) {
-            if (tabuleiro[4 + i][6] != 0) valido = 0;
-        }
-        if (valido) {
-            for (i = 0; i < TAM_NAVIO; i++) {
-                tabuleiro[4 + i][6] = NAVIO;
-            }
-        }
-    }
+    // Matrizes de habilidades
+    int cone[HABIL_TAM][HABIL_TAM];
+    int cruz[HABIL_TAM][HABIL_TAM];
+    int octaedro[HABIL_TAM][HABIL_TAM];
 
-    // ===============================================
-    // Navio 3 - Diagonal ↘ (linha 0,coluna 0 até 2,2)
-    // ===============================================
-    valido = 1;
-    if (0 + TAM_NAVIO <= TAM && 0 + TAM_NAVIO <= TAM) {
-        for (i = 0; i < TAM_NAVIO; i++) {
-            if (tabuleiro[0 + i][0 + i] != 0) valido = 0;
-        }
-        if (valido) {
-            for (i = 0; i < TAM_NAVIO; i++) {
-                tabuleiro[0 + i][0 + i] = NAVIO;
-            }
-        }
-    }
+    criarCone(cone);
+    criarCruz(cruz);
+    criarOctaedro(octaedro);
 
-    // ===============================================
-    // Navio 4 - Diagonal ↙ (linha 9,coluna 9 até 7,7)
-    // ===============================================
-    valido = 1;
-    if (9 - (TAM_NAVIO - 1) >= 0 && 9 - (TAM_NAVIO - 1) >= 0) {
-        for (i = 0; i < TAM_NAVIO; i++) {
-            if (tabuleiro[9 - i][9 - i] != 0) valido = 0;
-        }
-        if (valido) {
-            for (i = 0; i < TAM_NAVIO; i++) {
-                tabuleiro[9 - i][9 - i] = NAVIO;
-            }
-        }
-    }
+    // Aplicar habilidades em pontos fixos
+    aplicarHabilidade(tabuleiro, cone, 1, 1);        // cone no canto superior
+    aplicarHabilidade(tabuleiro, cruz, 5, 5);       // cruz no meio
+    aplicarHabilidade(tabuleiro, octaedro, 8, 3);   // octaedro mais embaixo
 
-    // -------- Mostrar o tabuleiro --------
-    printf("\n===== TABULEIRO FINAL =====\n\n");
-    for (i = 0; i < TAM; i++) {
-        for (j = 0; j < TAM; j++) {
-            printf("%d ", tabuleiro[i][j]);
-        }
-        printf("\n");
-    }
+    // Mostrar tabuleiro final
+    mostrarTabuleiro(tabuleiro);
 
     return 0;
 }
