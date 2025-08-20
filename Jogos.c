@@ -1,86 +1,79 @@
 #include <stdio.h>
 
+#define TAM 10        // tamanho do tabuleiro
+#define TAM_NAVIO 3   // tamanho fixo dos navios
+#define NAVIO 3       // valor que representa navio no tabuleiro
+
 int main() {
-    int TAM = 10;          // tamanho do tabuleiro
-    int TAM_NAVIO = 3;     // tamanho fixo do navio
-    int NAVIO = 3;         // valor que representa navio
-    int tabuleiro[10][10]; // tabuleiro 10x10
+    int tabuleiro[TAM][TAM]; // tabuleiro 10x10
     
-    int linha, coluna;
     int i, j;
     int valido;
 
-    // Inicializar o tabuleiro com 0 (água)
+    // -------- Inicializar o tabuleiro com água (0) --------
     for (i = 0; i < TAM; i++) {
         for (j = 0; j < TAM; j++) {
             tabuleiro[i][j] = 0;
         }
     }
 
-    printf("=== BATALHA NAVAL - POSICIONAMENTO DE NAVIOS ===\n");
-
-    // -------- Navio horizontal --------
-    while (1) {
-        printf("\nDigite a linha (0-9) e coluna (0-9) do navio horizontal (tamanho 3): ");
-        scanf("%d %d", &linha, &coluna);
-
-        // Assume que é válido
-        valido = 1;
-
-        // Verifica se cabe
-        if (coluna + TAM_NAVIO > TAM) {
-            valido = 0;
+    // ===============================================
+    // Navio 1 - Horizontal (linha 2, colunas 1 a 3)
+    // ===============================================
+    valido = 1;
+    if (1 + TAM_NAVIO <= TAM) {
+        for (j = 0; j < TAM_NAVIO; j++) {
+            if (tabuleiro[2][1 + j] != 0) valido = 0;
         }
-
-        // Verifica se não sobrepõe
-        if (valido == 1) {
+        if (valido) {
             for (j = 0; j < TAM_NAVIO; j++) {
-                if (tabuleiro[linha][coluna + j] != 0) {
-                    valido = 0;
-                }
+                tabuleiro[2][1 + j] = NAVIO;
             }
-        }
-
-        // Se válido, posiciona
-        if (valido == 1) {
-            for (j = 0; j < TAM_NAVIO; j++) {
-                tabuleiro[linha][coluna + j] = NAVIO;
-            }
-            break; // sai do while
-        } else {
-            printf("❌ Posicao invalida! Tente novamente.\n");
         }
     }
 
-    // -------- Navio vertical --------
-    while (1) {
-        printf("\nDigite a linha (0-9) e coluna (0-9) do navio vertical (tamanho 3): ");
-        scanf("%d %d", &linha, &coluna);
-
-        valido = 1;
-
-        // Verifica se cabe
-        if (linha + TAM_NAVIO > TAM) {
-            valido = 0;
+    // ===============================================
+    // Navio 2 - Vertical (coluna 6, linhas 4 a 6)
+    // ===============================================
+    valido = 1;
+    if (4 + TAM_NAVIO <= TAM) {
+        for (i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[4 + i][6] != 0) valido = 0;
         }
-
-        // Verifica se não sobrepõe
-        if (valido == 1) {
+        if (valido) {
             for (i = 0; i < TAM_NAVIO; i++) {
-                if (tabuleiro[linha + i][coluna] != 0) {
-                    valido = 0;
-                }
+                tabuleiro[4 + i][6] = NAVIO;
             }
         }
+    }
 
-        // Se válido, posiciona
-        if (valido == 1) {
+    // ===============================================
+    // Navio 3 - Diagonal ↘ (linha 0,coluna 0 até 2,2)
+    // ===============================================
+    valido = 1;
+    if (0 + TAM_NAVIO <= TAM && 0 + TAM_NAVIO <= TAM) {
+        for (i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[0 + i][0 + i] != 0) valido = 0;
+        }
+        if (valido) {
             for (i = 0; i < TAM_NAVIO; i++) {
-                tabuleiro[linha + i][coluna] = NAVIO;
+                tabuleiro[0 + i][0 + i] = NAVIO;
             }
-            break;
-        } else {
-            printf("❌ Posicao invalida! Tente novamente.\n");
+        }
+    }
+
+    // ===============================================
+    // Navio 4 - Diagonal ↙ (linha 9,coluna 9 até 7,7)
+    // ===============================================
+    valido = 1;
+    if (9 - (TAM_NAVIO - 1) >= 0 && 9 - (TAM_NAVIO - 1) >= 0) {
+        for (i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[9 - i][9 - i] != 0) valido = 0;
+        }
+        if (valido) {
+            for (i = 0; i < TAM_NAVIO; i++) {
+                tabuleiro[9 - i][9 - i] = NAVIO;
+            }
         }
     }
 
@@ -91,12 +84,6 @@ int main() {
             printf("%d ", tabuleiro[i][j]);
         }
         printf("\n");
-    }
-
-    return 0;
-}
-
-
     }
 
     return 0;
